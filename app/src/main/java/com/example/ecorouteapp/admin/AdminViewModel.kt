@@ -28,9 +28,18 @@ class AdminViewModel(
 
 
 
-    fun postStationStatus(stationId:String,status:Boolean){
+    fun postStationStatus(stationId: String, status: Boolean) {
         viewModelScope.launch {
             repository.postStationStatus(stationId, status)
+
+            // refresh list from backend
+            val stations = repository.getMonitoringStations()
+            _monitoringStations.value = stations
+
+            // refresh currently opened details (if present in list)
+            stations.firstOrNull { it.id == stationId }?.let { updated ->
+                _stationDetails.value = updated
+            }
         }
     }
 

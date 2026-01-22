@@ -78,4 +78,27 @@ fun StatusDialog(
     }
 }
 
+@Composable
+fun ConfirmStatusChangeDialog(
+    show: Boolean,
+    newStatus: Boolean,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    if (show) {
+        val statusText = if (newStatus) "Active" else "Inactive"
+
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text("Confirm status change") },
+            text = { Text("Are you sure you want to change the station status to $statusText?") },
+            confirmButton = {
+                Button(onClick = onConfirm) { Text("Confirm") }
+            },
+            dismissButton = {
+                Button(onClick = onDismiss) { Text("Cancel") }
+            }
+        )
+    }
+}
 
